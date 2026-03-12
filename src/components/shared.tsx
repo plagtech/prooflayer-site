@@ -89,20 +89,109 @@ export function GradientText({ children }: { children: React.ReactNode }) {
 
 /* ═══════════════ NAVBAR ═══════════════ */
 
+function HamburgerIcon({ open }: { open: boolean }) {
+  return (
+    <div style={{ width: 22, height: 16, position: "relative", cursor: "pointer" }}>
+      <span style={{ position: "absolute", left: 0, width: 22, height: 2, borderRadius: 1, background: "#1a202c", transition: "all 0.3s ease", top: open ? 7 : 0, transform: open ? "rotate(45deg)" : "none" }} />
+      <span style={{ position: "absolute", left: 0, width: 22, height: 2, borderRadius: 1, background: "#1a202c", transition: "all 0.2s ease", top: 7, opacity: open ? 0 : 1 }} />
+      <span style={{ position: "absolute", left: 0, width: 22, height: 2, borderRadius: 1, background: "#1a202c", transition: "all 0.3s ease", top: open ? 7 : 14, transform: open ? "rotate(-45deg)" : "none" }} />
+    </div>
+  );
+}
+
 export function Navbar({ active = "home" }: { active?: string }) {
   const [scrolled, setScrolled] = useState(false);
-  useEffect(() => { const h = () => setScrolled(window.scrollY > 30); window.addEventListener("scroll", h); return () => window.removeEventListener("scroll", h); }, []);
-  const pages = [{ key: "home", label: "Home", href: "/" }, { key: "sdk", label: "SDK & Score", href: "/sdk" }, { key: "pricing", label: "Pricing", href: "/pricing" }];
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 30);
+    window.addEventListener("scroll", h);
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+
+  // Close menu on resize to desktop
+  useEffect(() => {
+    const h = () => { if (window.innerWidth > 768) setMenuOpen(false); };
+    window.addEventListener("resize", h);
+    return () => window.removeEventListener("resize", h);
+  }, []);
+
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
+  const pages = [
+    { key: "home", label: "Home", href: "/" },
+    { key: "sdk", label: "SDK & Score", href: "/sdk" },
+    { key: "pricing", label: "Pricing", href: "/pricing" },
+  ];
+
   return (
-    <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, padding: "0 24px", background: scrolled ? "rgba(244,245,247,0.88)" : "transparent", backdropFilter: scrolled ? "blur(16px)" : "none", borderBottom: scrolled ? "1px solid rgba(0,0,0,0.06)" : "1px solid transparent", transition: "all 0.3s ease" }}>
-      <div style={{ maxWidth: 1120, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 60 }}>
-        <a href="/" style={{ display: "flex", alignItems: "center", gap: 9, textDecoration: "none" }}><Logo size={28} /><span style={{ fontSize: 17, fontWeight: 700, color: "#1a202c", letterSpacing: "-0.02em" }}>ProofLayer</span></a>
-        <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
-          {pages.map((p) => <a key={p.key} href={p.href} style={{ fontSize: 13.5, color: active === p.key ? "#1a202c" : "#718096", textDecoration: "none", fontWeight: active === p.key ? 650 : 500 }}>{p.label}</a>)}
-          <a href="https://github.com/plagtech/prooflayer-sdk" target="_blank" rel="noopener noreferrer" style={{ color: "#718096", display: "flex" }}><GithubIcon /></a>
+    <>
+      <nav style={{
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, padding: "0 24px",
+        background: scrolled || menuOpen ? "rgba(244,245,247,0.95)" : "transparent",
+        backdropFilter: scrolled || menuOpen ? "blur(16px)" : "none",
+        borderBottom: scrolled || menuOpen ? "1px solid rgba(0,0,0,0.06)" : "1px solid transparent",
+        transition: "all 0.3s ease",
+      }}>
+        <div style={{ maxWidth: 1120, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 60 }}>
+          <a href="/" style={{ display: "flex", alignItems: "center", gap: 9, textDecoration: "none" }}>
+            <Logo size={28} />
+            <span style={{ fontSize: 17, fontWeight: 700, color: "#1a202c", letterSpacing: "-0.02em" }}>ProofLayer</span>
+          </a>
+
+          {/* Desktop links */}
+          <div className="nav-desktop" style={{ display: "flex", alignItems: "center", gap: 24 }}>
+            {pages.map((p) => (
+              <a key={p.key} href={p.href} style={{
+                fontSize: 13.5, color: active === p.key ? "#1a202c" : "#718096",
+                textDecoration: "none", fontWeight: active === p.key ? 650 : 500,
+              }}>{p.label}</a>
+            ))}
+            <a href="https://github.com/plagtech/prooflayer-sdk" target="_blank" rel="noopener noreferrer"
+              style={{ color: "#718096", display: "flex" }}><GithubIcon /></a>
+          </div>
+
+          {/* Mobile hamburger */}
+          <button
+            className="nav-mobile-btn"
+            onClick={() => setMenuOpen(!menuOpen)}
+            style={{ background: "none", border: "none", padding: 8, cursor: "pointer", display: "none" }}
+            aria-label="Toggle menu"
+          >
+            <HamburgerIcon open={menuOpen} />
+          </button>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      {/* Mobile menu overlay */}
+      {menuOpen && (
+        <div style={{
+          position: "fixed", top: 60, left: 0, right: 0, bottom: 0, zIndex: 99,
+          background: "rgba(244,245,247,0.98)", backdropFilter: "blur(20px)",
+          animation: "fadeUp 0.25s ease",
+        }}>
+          <div style={{ padding: "32px 24px", display: "flex", flexDirection: "column", gap: 8 }}>
+            {pages.map((p) => (
+              <a key={p.key} href={p.href} onClick={() => setMenuOpen(false)} style={{
+                fontSize: 20, fontWeight: active === p.key ? 700 : 500,
+                color: active === p.key ? "#1a202c" : "#718096",
+                textDecoration: "none", padding: "14px 0",
+                borderBottom: "1px solid rgba(0,0,0,0.05)",
+              }}>{p.label}</a>
+            ))}
+            <a href="https://github.com/plagtech/prooflayer-sdk" target="_blank" rel="noopener noreferrer"
+              onClick={() => setMenuOpen(false)}
+              style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 20, fontWeight: 500, color: "#718096", textDecoration: "none", padding: "14px 0" }}>
+              <GithubIcon /> GitHub
+            </a>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

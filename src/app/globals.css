@@ -23,5 +23,9 @@ body{font-family:'Instrument Sans',-apple-system,BlinkMacSystemFont,sans-serif;b
   .resp-footer{flex-direction:column!important;align-items:center!important;text-align:center!important}
   .resp-2col{grid-template-columns:repeat(2,1fr)!important}
 }
+@media(max-width:768px){
+  .nav-desktop{display:none!important}
+  .nav-mobile-btn{display:flex!important}
+}
 @media(max-width:960px){.resp-2col-pricing{grid-template-columns:repeat(2,1fr)!important}}
 @media(max-width:640px){.resp-2col-pricing{grid-template-columns:1fr!important}.resp-2col{grid-template-columns:1fr!important}}
