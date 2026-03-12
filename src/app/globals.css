@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#f4f5f7;color:#1a202c;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+::selection{background:rgba(45,55,72,0.12)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes pulseSubtle{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes tabFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+.pixel-dot{border-radius:5px;background:rgba(45,55,72,0.12)}
+
+.btn-dark{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:600;background:#1a202c;color:#f4f5f7;text-decoration:none;transition:all .25s ease;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+.btn-dark:hover{background:#2d3748;transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.13)}
+
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:600;background:transparent;border:1.5px solid rgba(45,55,72,0.18);color:#2d3748;text-decoration:none;transition:all .25s ease}
+.btn-ghost:hover{border-color:rgba(45,55,72,0.35);background:rgba(45,55,72,0.03);transform:translateY(-2px)}
+
+@media(max-width:860px){
+  .resp-1col{grid-template-columns:1fr!important}
+  .resp-footer{flex-direction:column!important;align-items:center!important;text-align:center!important}
+  .resp-2col{grid-template-columns:repeat(2,1fr)!important}
+}
+@media(max-width:960px){.resp-2col-pricing{grid-template-columns:repeat(2,1fr)!important}}
+@media(max-width:640px){.resp-2col-pricing{grid-template-columns:1fr!important}.resp-2col{grid-template-columns:1fr!important}}

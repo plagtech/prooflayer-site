@@ -1,19 +1,24 @@
 import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "ProofLayer — Agent Trust Infrastructure",
-  description: "Opt-in behavioral trust scoring SDK for AI agents. Multi-dimensional scoring, on-chain EAS attestations, and verifiable report cards.",
+  description:
+    "An opt-in SDK that generates verifiable trust scores for AI agents. On-chain attestations. Multi-dimensional scoring.",
+  metadataBase: new URL("https://prooflayer.net"),
   openGraph: {
     title: "ProofLayer — Agent Trust Infrastructure",
-    description: "Secure your agent's intent. Behavioral trust scoring for the autonomous economy.",
+    description:
+      "Verifiable trust scores for AI agents. On-chain EAS attestations on Base.",
     url: "https://prooflayer.net",
     siteName: "ProofLayer",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "ProofLayer — Agent Trust Infrastructure",
-    description: "Secure your agent's intent. Behavioral trust scoring for the autonomous economy.",
+    title: "ProofLayer",
+    description:
+      "Agent Trust Infrastructure — verifiable scores, on-chain attestations.",
   },
 };
 
@@ -24,15 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700;800&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body style={{ margin: 0, padding: 0, background: "#060610" }}>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
